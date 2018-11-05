@@ -274,11 +274,11 @@ Set-ADUser -identity $dbManagedAccount  -Enabled 1 -PasswordNeverExpires 1
 # Create Groups
 
 Write-Verbose "Lets Create the user Groups account" -Verbose 
-New-ADGroup -name "MIMSyncAdmins" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncAdmins" -Path $path
-New-ADGroup -name "MIMSyncOperators" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncOperators" -Path $path
-New-ADGroup -name "MIMSyncJoiners" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncJoiners" -Path $path
-New-ADGroup -name "MIMSyncBrowse" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncBrowse" -Path $path
-New-ADGroup -name "MIMSyncPasswordSet" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncPasswordSet" -Path $path
+New-ADGroup -name "MIMSyncAdmins" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncAdmins" -Path $path
+New-ADGroup -name "MIMSyncOperators" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncOperators" -Path $path
+New-ADGroup -name "MIMSyncJoiners" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncJoiners" -Path $path
+New-ADGroup -name "MIMSyncBrowse" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncBrowse" -Path $path
+New-ADGroup -name "MIMSyncPasswordSet" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncPasswordSet" -Path $path
 Add-ADGroupMember -identity "MIMSyncAdmins" -Members $MIMAdmin
 Add-ADGroupmember -identity "MIMSyncAdmins" -Members $MIMService
 Add-ADGroupmember -identity "MIMSyncBrowse" -Members $MIMService
