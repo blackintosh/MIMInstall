@@ -8,7 +8,7 @@
 # Don't forget to: Set-ExecutionPolicy RemoteSigned, in case you have not done already
 #
 # Create c:\temp for logs etc
-# And 
+# 
 # 
 #
 # This is fore the SQL Install  Needs to tested and Developed more
