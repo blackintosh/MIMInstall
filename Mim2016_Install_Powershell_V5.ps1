@@ -82,7 +82,7 @@ $PreRequsFilesPath = "C:\temp\SharePoint2016\"
 # E:\Synchronization Service
 
 $SynchronizationServiceExe = "E:\Synchronization Service\Synchronization Service.msi"
-$syncLofFile = "C:\log\synclog.log"
+$syncLofFile = "C:\temp\synclog.log"
 
 # Service and Portal path
 
