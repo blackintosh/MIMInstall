@@ -45,7 +45,7 @@ $SPPort = "80"
 $OwnerAlias = "mim\MIMAdmin"
 $SecondaryOwnerAlias = "mim\administrator"
 $CompatibilityLevel = "15"
-$New-SPAlternateURL = "http://localhost"
+$New_SPAlternateURL = "http://localhost"
 $Ie_Zone = "intranet"
 
 # OU this is for the function to create the OU Path for users and groups in ad
@@ -353,7 +353,7 @@ $contentService = [Microsoft.SharePoint.Administration.SPWebService]::ContentSer
 $contentService.ViewStateOnServer = $false;
 $contentService.Update();
 Get-SPTimerJob hourly-all-sptimerservice-health-analysis-job | disable-SPTimerJob
-New-SPAlternateURL -WebApplication $SPPortalName -Url $New-SPAlternateURL -Zone $Ie_Zone
+New-SPAlternateURL -WebApplication $SPPortalName -Url $New_SPAlternateURL -Zone $Ie_Zone
 
 
 #$dbManagedAccount = Get-SPManagedAccount -Identity $SPdbManagedAccount
