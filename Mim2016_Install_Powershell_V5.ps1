@@ -46,24 +46,25 @@ $OwnerAlias = "mim\MIMAdmin"
 $SecondaryOwnerAlias = "mim\administrator"
 $CompatibilityLevel = "15"
 $New-SPAlternateURL = "http://localhost"
+$Ie_Zone = "intranet"
 
 # OU this is for the function to create the OU Path for users and groups in ad
 # TO be dev some way to simplify handel of Variables
+# OU=User,OU=Lab,DC=mim,DC=nu
 
-$Dn_Root = "DC=contoso,DC=it"
-$Dn_Company = "Contoso"
-$Dn_Company_Path = "OU=Contoso,DC=contoso,DC=it"
-$OU ="Mim"
-$path = "OU=Mim,OU=Contoso,DC=Contoso,DC=it" 
+$Dn_Root = "DC=mim,DC=nu"
+$Dn_Company = "lab"
+$Dn_Company_Path = "OU=Lab,DC=mim,DC=nu"
+$OU ="User"
+$path = "OU=User,OU=Lab,DC=mim,DC=nu" 
 
 # Setspn serviceclass/host:portnumber servicename
 # To be dev I function that check how many SPN there is and add those
 
-$setspn1 = "HTTP/mim.contoso.it contoso\MIMSP"
-$setspn2 = "HTTP/mim contoso\MIMSP"
-$setspn3 = "MIMService/mim.contoso.it contoso\MIMService"
-$setspn4 = "MIMSync/mim contoso\MIMSync"
-
+$setspn1 = "HTTP/portal.mim.nu mim\MIMSP"
+$setspn2 = "HTTP/mim mim\MIMSP"
+$setspn3 = "MIMService/portal.mim.nu mim\MIMService"
+$setspn4 = "MIMSync/mim mim\MIMSync"
 
 # windows server ISO path
 $source = "F:\sources\SxS" 
@@ -131,7 +132,7 @@ Import-Module BitsTransfer
 
 $DownloadUrls = (
             "http://download.microsoft.com/download/4/B/1/4B1E9B0E-A4F3-4715-B417-31C82302A70A/ENU/x64/sqlncli.msi", # Microsoft SQL Server 2012 SP1 Native Client
-			"https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x64/msodbcsql.msi", #Microsoft ODBC Driver 11 for SQL Server
+	    "https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x64/msodbcsql.msi", #Microsoft ODBC Driver 11 for SQL Server
             "http://download.microsoft.com/download/E/0/0/E0060D8F-2354-4871-9596-DC78538799CC/Synchronization.msi", # Microsoft Sync Framework Runtime v1.0 SP1 (x64)
             "http://download.microsoft.com//download/0/1/D/01D06854-CA0C-46F1-ADBA-EBF86010DCC6/rtm/MicrosoftIdentityExtensions-64.msi", # Microsoft Identity Extensions
             "http://download.microsoft.com/download/A/6/7/A678AB47-496B-4907-B3D4-0A2D280A13C0/WindowsServerAppFabricSetup_x64.exe", # Windows Server AppFabric 1.1
@@ -352,7 +353,7 @@ $contentService = [Microsoft.SharePoint.Administration.SPWebService]::ContentSer
 $contentService.ViewStateOnServer = $false;
 $contentService.Update();
 Get-SPTimerJob hourly-all-sptimerservice-health-analysis-job | disable-SPTimerJob
-New-SPAlternateURL -WebApplication $SPPortalName -Url $New-SPAlternateURL -Zone intranet
+New-SPAlternateURL -WebApplication $SPPortalName -Url $New-SPAlternateURL -Zone $Ie_Zone
 
 
 #$dbManagedAccount = Get-SPManagedAccount -Identity $SPdbManagedAccount
