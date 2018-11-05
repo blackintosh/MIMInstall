@@ -116,7 +116,7 @@ $LOGFILENAME = $PortalLogPath
 
 [void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
 
-$title = 'Have you rin Prerequest installer'
+$title = 'Have you run Prerequest installer'
 $msg   = 'Y / N'
 
 $text = [Microsoft.VisualBasic.Interaction]::InputBox($msg, $title)
@@ -219,7 +219,7 @@ DownloadPreReqs
 
 #Install PreReqs
 
-Start-Process "$PreRequsInstallerPath\PrerequisiteInstaller.exe" /continue /unattend  -Wait -ArgumentList "  `
+Start-Process "$PreRequsInstallerPath\PrerequisiteInstaller.exe" -Wait -ArgumentList "  `
               /SQLNCli:`"$PreRequsFilesPath\sqlncli.msi`" `
               /idfx11:`"$PreRequsFilesPath\MicrosoftIdentityExtensions-64.msi`" `
               /Sync:`"$PreRequsFilesPath\Synchronization.msi`" `                                                                                 
@@ -241,44 +241,44 @@ New-ADOrganizationalUnit -Name $OU -Path $Dn_Company_Path
 
 Write-Verbose "Lets Create the user account in the domain" -Verbose 
 
-$sp = ConvertTo-SecureString $passwdMIMMA "asplaintext "force
-New-ADUser "SamAccountName $MIMMA "name $MIMMA -Path $path
-Set-ADAccountPassword "identity $MIMMA "NewPassword $sp
-Set-ADUser "identity $MIMMA "Enabled 1 "PasswordNeverExpires 1
+$sp = ConvertTo-SecureString $passwdMIMMA -asplaintext -force
+New-ADUser -SamAccountName $MIMMA -name $MIMMA -Path $path
+Set-ADAccountPassword -identity $MIMMA -NewPassword $sp
+Set-ADUser -identity $MIMMA -Enabled 1 -PasswordNeverExpires 1
 
-$sp = ConvertTo-SecureString $passwdMIMSync "asplaintext "force
-New-ADUser "SamAccountName $MIMSync "name $MIMSync -Path $path
-Set-ADAccountPassword "identity $MIMSync "NewPassword $sp
-Set-ADUser "identity $MIMSync "Enabled 1 "PasswordNeverExpires 1
+$sp = ConvertTo-SecureString $passwdMIMSync -asplaintext -force
+New-ADUser -SamAccountName $MIMSync -name $MIMSync -Path $path
+Set-ADAccountPassword -identity $MIMSync -NewPassword $sp
+Set-ADUser -identity $MIMSync -Enabled 1 -PasswordNeverExpires 1
 
-$sp = ConvertTo-SecureString $passwdMIMService "asplaintext "force
-New-ADUser "SamAccountName $MIMService "name $MIMService -Path $path
-Set-ADAccountPassword "identity $MIMService "NewPassword $sp
-Set-ADUser "identity $MIMService "Enabled 1 "PasswordNeverExpires 1
+$sp = ConvertTo-SecureString $passwdMIMService -asplaintext -force
+New-ADUser -SamAccountName $MIMService -name $MIMService -Path $path
+Set-ADAccountPassword -identity $MIMService -NewPassword $sp
+Set-ADUser -identity $MIMService -Enabled 1 -PasswordNeverExpires 1
 
-$sp = ConvertTo-SecureString $passwdMIMSP "asplaintext "force
-New-ADUser "SamAccountName $MIMSP "name $MIMSP -Path $path
-Set-ADAccountPassword "identity $MIMSP "NewPassword $sp
-Set-ADUser "identity $MIMSP "Enabled 1 "PasswordNeverExpires 1
+$sp = ConvertTo-SecureString $passwdMIMSP -asplaintext -force
+New-ADUser -SamAccountName $MIMSP -name $MIMSP -Path $path
+Set-ADAccountPassword -identity $MIMSP -NewPassword $sp
+Set-ADUser -identity $MIMSP -Enabled 1 -PasswordNeverExpires 1
 
-$sp = ConvertTo-SecureString $passwdMIMAdmin "asplaintext "force
-New-ADUser "SamAccountName $MIMAdmin "name $MIMAdmin -Path $path
-Set-ADAccountPassword "identity $MIMAdmin "NewPassword $sp
-Set-ADUser "identity $MIMAdmin "Enabled 1 "PasswordNeverExpires 1 
+$sp = ConvertTo-SecureString $passwdMIMAdmin -asplaintext -force
+New-ADUser -SamAccountName $MIMAdmin -name $MIMAdmin -Path $path
+Set-ADAccountPassword -identity $MIMAdmin -NewPassword $sp
+Set-ADUser -identity $MIMAdmin -Enabled 1 -PasswordNeverExpires 1 
 
-$sp = ConvertTo-SecureString $passwddbManagedAccount "asplaintext "force
-New-ADUser "SamAccountName $dbManagedAccount  "name $dbManagedAccount  -Path $path
-Set-ADAccountPassword "identity $dbManagedAccount  "NewPassword $sp
-Set-ADUser "identity $dbManagedAccount  "Enabled 1 "PasswordNeverExpires 1 
+$sp = ConvertTo-SecureString $passwddbManagedAccount -asplaintext -force
+New-ADUser -SamAccountName $dbManagedAccount  -name $dbManagedAccount -Path $path
+Set-ADAccountPassword -identity $dbManagedAccount  -NewPassword $sp
+Set-ADUser -identity $dbManagedAccount  -Enabled 1 -PasswordNeverExpires 1 
 
 # Create Groups
 
 Write-Verbose "Lets Create the user Groups account" -Verbose 
-New-ADGroup -name "MIMSyncAdmins" GroupCategory Security "GroupScope Global "SamAccountName "MIMSyncAdmins" -Path $path
-New-ADGroup "name "MIMSyncOperators" GroupCategory Security "GroupScope Global "SamAccountName "MIMSyncOperators" -Path $path
-New-ADGroup "name "MIMSyncJoiners" GroupCategory Security "GroupScope Global "SamAccountName "MIMSyncJoiners" -Path $path
-New-ADGroup "name "MIMSyncBrowse" GroupCategory Security "GroupScope Global "SamAccountName "MIMSyncBrowse" -Path $path
-New-ADGroup "name "MIMSyncPasswordSet" GroupCategory Security "GroupScope Global "SamAccountName "MIMSyncPasswordSet" -Path $path
+New-ADGroup -name "MIMSyncAdmins" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncAdmins" -Path $path
+New-ADGroup -name "MIMSyncOperators" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncOperators" -Path $path
+New-ADGroup -name "MIMSyncJoiners" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncJoiners" -Path $path
+New-ADGroup -name "MIMSyncBrowse" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncBrowse" -Path $path
+New-ADGroup -name "MIMSyncPasswordSet" GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncPasswordSet" -Path $path
 Add-ADGroupMember -identity "MIMSyncAdmins" -Members $MIMAdmin
 Add-ADGroupmember -identity "MIMSyncAdmins" -Members $MIMService
 Add-ADGroupmember -identity "MIMSyncBrowse" -Members $MIMService
