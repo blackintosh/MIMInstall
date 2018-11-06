@@ -11,7 +11,7 @@
 # 
 #
 # This is fore the SQL Install  Needs to tested and Developed more
-# .\setup.exe /Q /IACCEPTSQLSERVERLICENSETERMS /ACTION=install /FEATURES=SQL /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="contoso\sharepoint" /SQLSVCPASSWORD="Pass@word1"   /AGTSVCSTARTUPTYPE=Automatic /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /SQLSYSADMINACCOUNTS="contoso\Administrator" /TCPENABLED=1
+# .\setup.exe /Q /IACCEPTSQLSERVERLICENSETERMS /ACTION=install /FEATURES=SQL /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="Mim\sharepoint" /SQLSVCPASSWORD="Pass@word1"   /AGTSVCSTARTUPTYPE=Automatic /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /SQLSYSADMINACCOUNTS="Mim\Administrator" /TCPENABLED=1
 #****************************************************************************************
 
 # Acounts that will be used or created
@@ -111,8 +111,6 @@ $RESET_SERVERNAME = Hostname
 $SHAREPOINT_URL = $SPWeb
 $MIMPAM_ACCOUNT_DOMAIN = $env:USERDOMAIN
 $LOGFILENAME = $PortalLogPath
-
-
 
 # Dont edit script below
 ############################# Command Execution Starts Below ###################################
