@@ -316,7 +316,7 @@ iisreset /STOP
 C:\Windows\System32\inetsrv\appcmd.exe unlock config /section:windowsAuthentication -commit:apphost
 iisreset /START
 
-# Install Sharepoint Trail Serial RTNGH-MQRV6-M3BWQ-DB748-VH7DM
+# Install Sharepoint Trial Serial RTNGH-MQRV6-M3BWQ-DB748-VH7DM
 # Needs to add /config and add right configuration 
 
 $cmd = "$PreRequsInstallerPath\setup.exe"
