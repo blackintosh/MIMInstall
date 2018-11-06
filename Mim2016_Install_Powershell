@@ -1,4 +1,4 @@
-This scrit is Composed/Found/stolen and modify by Nils Cronstedt And Jonas Novesten
+# This scrit is Composed/Found/stolen and modify by Nils Cronstedt And Jonas Novesten
 # And its free to use and modify 
 # This script downloads SharePoint Server 2016 RTM
 # Only run this script on Windows Server 2012 R2
@@ -66,6 +66,7 @@ $setspn3 = "MIMService/portal.mim.nu mim\MIMService"
 $setspn4 = "MIMSync/mim mim\MIMSync"
 
 # windows server ISO path
+
 $source = "F:\sources\SxS" 
 
 # Directory path where SharePoint 2016 Pre-requisites files are kept
@@ -134,17 +135,17 @@ Import-Module BitsTransfer
 # Specify download url's for SharePoint Server 2016 RTM prerequisites
 
 $DownloadUrls = (
-            "http://download.microsoft.com/download/4/B/1/4B1E9B0E-A4F3-4715-B417-31C82302A70A/ENU/x64/sqlncli.msi", # Microsoft SQL Server 2012 SP1 Native Client
-			"https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x64/msodbcsql.msi", #Microsoft ODBC Driver 11 for SQL Server
-            "http://download.microsoft.com/download/E/0/0/E0060D8F-2354-4871-9596-DC78538799CC/Synchronization.msi", # Microsoft Sync Framework Runtime v1.0 SP1 (x64)
-            "http://download.microsoft.com//download/0/1/D/01D06854-CA0C-46F1-ADBA-EBF86010DCC6/rtm/MicrosoftIdentityExtensions-64.msi", # Microsoft Identity Extensions
-            "http://download.microsoft.com/download/A/6/7/A678AB47-496B-4907-B3D4-0A2D280A13C0/WindowsServerAppFabricSetup_x64.exe", # Windows Server AppFabric 1.1
-            "http://download.microsoft.com/download/F/1/0/F1093AF6-E797-4CA8-A9F6-FC50024B385C/AppFabric-KB3092423-x64-ENU.exe", # Cumulative Update 7 for Microsoft AppFabric 1.1 for Windows Server
-            "http://download.microsoft.com/download/3/C/F/3CF781F5-7D29-4035-9265-C34FF2369FA2/setup_msipc_x64.exe", # Microsoft Information Protection and Control Client
-            "http://download.microsoft.com/download/1/C/A/1CAA41C7-88B9-42D6-9E11-3C655656DAB1/WcfDataServices.exe", # Microsoft WCF Data Services 5.6
-            "http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x64.exe", # Visual C++ Redistributable Package for Visual Studio 2015,
-            "http://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x64.exe",# Another visual C++ Redistributable Package for Visual Studio 2013/2012,
-            "https://download.microsoft.com/download/C/3/A/C3A5200B-D33C-47E9-9D70-2F7C65DAAD94/NDP46-KB3045557-x86-x64-AllOS-ENU.exe" # .NET framework 4.6
+        	"http://download.microsoft.com/download/4/B/1/4B1E9B0E-A4F3-4715-B417-31C82302A70A/ENU/x64/sqlncli.msi", # Microsoft SQL Server 2012 SP1 Native Client
+		"https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x64/msodbcsql.msi", #Microsoft ODBC Driver 11 for SQL Server
+		"http://download.microsoft.com/download/E/0/0/E0060D8F-2354-4871-9596-DC78538799CC/Synchronization.msi", # Microsoft Sync Framework Runtime v1.0 SP1 (x64)
+		"http://download.microsoft.com//download/0/1/D/01D06854-CA0C-46F1-ADBA-EBF86010DCC6/rtm/MicrosoftIdentityExtensions-64.msi", # Microsoft Identity Extensions
+		"http://download.microsoft.com/download/A/6/7/A678AB47-496B-4907-B3D4-0A2D280A13C0/WindowsServerAppFabricSetup_x64.exe", # Windows Server AppFabric 1.1
+		"http://download.microsoft.com/download/F/1/0/F1093AF6-E797-4CA8-A9F6-FC50024B385C/AppFabric-KB3092423-x64-ENU.exe", # Cumulative Update 7 for Microsoft AppFabric 1.1 for Windows Server
+		"http://download.microsoft.com/download/3/C/F/3CF781F5-7D29-4035-9265-C34FF2369FA2/setup_msipc_x64.exe", # Microsoft Information Protection and Control Client
+		"http://download.microsoft.com/download/1/C/A/1CAA41C7-88B9-42D6-9E11-3C655656DAB1/WcfDataServices.exe", # Microsoft WCF Data Services 5.6
+		"http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x64.exe", # Visual C++ Redistributable Package for Visual Studio 2015,
+		"http://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x64.exe",# Another visual C++ Redistributable Package for Visual Studio 2013/2012,
+		"https://download.microsoft.com/download/C/3/A/C3A5200B-D33C-47E9-9D70-2F7C65DAAD94/NDP46-KB3045557-x86-x64-AllOS-ENU.exe" # .NET framework 4.6
                 )
 
 function DownLoadPreRequisites()
@@ -222,7 +223,7 @@ DownloadPreReqs
 
 #Install PreReqs
 
-Start-Process "$PreRequsInstallerPath\PrerequisiteInstaller.exe" /Continue /Unattended -Wait -ArgumentList "  `
+Start-Process "$PreRequsInstallerPath\PrerequisiteInstaller.exe" -Wait -ArgumentList "  `
               /SQLNCli:`"$PreRequsFilesPath\sqlncli.msi`" `
               /idfx11:`"$PreRequsFilesPath\MicrosoftIdentityExtensions-64.msi`" `
               /Sync:`"$PreRequsFilesPath\Synchronization.msi`" `                                                                                 
@@ -238,6 +239,7 @@ Start-Process "$PreRequsInstallerPath\PrerequisiteInstaller.exe" /Continue /Unat
 # Create Accounts MIMMA,MIMSync,MIMService,MIMSP,MIMAdmin
 
 Import-Module ActiveDirectory
+
 Write-Verbose "Lets Create the OU Path where the user is placed" -Verbose 
 New-ADOrganizationalUnit -Name $Dn_Company -Path $Dn_Root
 New-ADOrganizationalUnit -Name $OU -Path $Dn_Company_Path
@@ -288,12 +290,14 @@ Add-ADGroupmember -identity "MIMSyncBrowse" -Members $MIMService
 Add-ADGroupmember -identity "MIMSyncPasswordSet" -Members $MIMService
 
 # Temorary fix $MIMService can not start Forfront Identity Manager Service
+
 Add-LocalGroupMember -Group "Administrators" -Member $MIMService
 Add-LocalGroupMember -Group "Administrators" -Member $dbManagedAccount 
 Add-ADGroupMember -identity "Domain Admins" -Members $dbManagedAccount # THis needs to be improved..
 
 
 # Try to add $dbManagedAccount to $SqlServer Note done yet
+
 #Enter-PSsession <ComputerName>
 #Add-LocalGroupMember -Group "Administrators" -Member <ComputerName>
 # 1
@@ -354,9 +358,9 @@ $contentService = [Microsoft.SharePoint.Administration.SPWebService]::ContentSer
 $contentService.ViewStateOnServer = $false;
 $contentService.Update();
 Get-SPTimerJob hourly-all-sptimerservice-health-analysis-job | disable-SPTimerJob
+New-SPAlternateURL -WebApplication $SPPortalName -Url $New_SPAlternateURL -Zone $Ie_Zone
 
 ## Install sharepoint portal
 
 $cmd = "MSIEXEC /i $PortalPath MAIL_SERVER=$MAIL_SERVER SQLSERVER_SERVER=$SQLSERVER_SERVER SERVICE_ACCOUNT_NAME=$SERVICE_ACCOUNT_NAME SERVICE_ACCOUNT_PASSWORD=$SERVICE_ACCOUNT_PASSWORD SERVICE_ACCOUNT_DOMAIN=$SERVICE_ACCOUNT_DOMAIN SERVICE_ACCOUNT_EMAIL=$SERVICE_ACCOUNT_EMAIL RUNNING_USER_EMAIL=$RUNNING_USER_EMAIL SYNCHRONIZATION_SERVER_ACCOUNT=$SYNCHRONIZATION_SERVER_ACCOUNT SYNCHRONIZATION_SERVER=$SYNCHRONIZATION_SERVER SERVICEADDRESS=$SERVICEADDRESS SHAREPOINTUSERS_CONF=1 REGISTRATION_ACCOUNT=$REGISTRATION_ACCOUNT REGISTRATION_ACCOUNT_PASSWORD=$REGISTRATION_ACCOUNT_PASSWORD REGISTRATION_PORT=8087 REGISTRATION_SERVERNAME=$REGISTRATION_SERVERNAME IS_REGISTRATION_EXTRANET=Extranet REGISTRATION_PORTAL_URL=$REGISTRATION_PORTAL_URL RESET_ACCOUNT=$RESET_ACCOUNT RESET_ACCOUNT_PASSWORD=$RESET_ACCOUNT_PASSWORD RESET_PORT=8088 RESET_SERVERNAME=$RESET_SERVERNAME IS_RESET_EXTRANET=Extranet SHAREPOINT_URL=$SHAREPOINT_URL ACCEPT_EULA=1 FIREWALL_CONF=1 SQMOPTINSETTING=1 ADDLOCAL=ALL REMOVE=PAMServices MIMPAM_ACCOUNT_DOMAIN=$MIMPAM_ACCOUNT_DOMAIN REBOOT=ReallySuppress /l*v $PortalLogPath"
 invoke-expression $cmd
-New-SPAlternateURL -WebApplication $SPPortalName -Url $New_SPAlternateURL -Zone $Ie_Zone
