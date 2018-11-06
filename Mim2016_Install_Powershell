@@ -22,7 +22,6 @@ $MIMService = "MIMService"
 $MIMSP = "MIMSP"
 $MIMAdmin = "MIMAdmin"
 $dbManagedAccount ="Sharepoint"
-#$SQLSever ="Corp-sql"
 
 # Password for users and for service accounts
 
@@ -33,31 +32,38 @@ $PasswdMIMSP = "Pass@word1"
 $PasswdMIMAdmin = "Pass@word1"
 $passwddbManagedAccount ="Pass@word1"
 
-# Portal Settings
 
-$SPUrl = "http://mim.contoso.it"
-$SPWeb = "http://mim.contoso.it:80"
-$SPdbManagedAccount = "contoso\sharepoint"
-$OwnerAlias = "contoso\MIMAdmin"
-$SecondaryOwnerAlias = "contoso\administrator"
+# Portal Settings
+$SPUrl = "http://portal.mim.nu"
+$SPWeb = "http://portal.mim.nu:80"
+$SPdbManagedAccount = "mim\sharepoint"
+$SPPortalName = "MIM Portal"
+$SPApplicationPool = "MIMAPPPool"
+$SPAuthenticationMethod = "Kerberos" 
+$SPPort = "80"
+$OwnerAlias = "mim\MIMAdmin"
+$SecondaryOwnerAlias = "mim\administrator"
+$CompatibilityLevel = "15"
+$New_SPAlternateURL = "http://localhost"
+$Ie_Zone = "intranet"
 
 # OU this is for the function to create the OU Path for users and groups in ad
 # TO be dev some way to simplify handel of Variables
+# OU=User,OU=Lab,DC=mim,DC=nu
 
-$Dn_Root = "DC=contoso,DC=it"
-$Dn_Company = "Contoso"
-$Dn_Company_Path = "OU=Contoso,DC=contoso,DC=it"
-$OU ="Mim"
-$path = "OU=Mim,OU=Contoso,DC=Contoso,DC=it" 
+$Dn_Root = "DC=mim,DC=nu"
+$Dn_Company = "lab"
+$Dn_Company_Path = "OU=Lab,DC=mim,DC=nu"
+$OU ="User"
+$path = "OU=User,OU=Lab,DC=mim,DC=nu" 
 
 # Setspn serviceclass/host:portnumber servicename
-# To be dev I function that chesck how many SPN there is and add those
+# To be dev I function that check how many SPN there is and add those
 
-$setspn1 = "HTTP/mim.contoso.it contoso\MIMSP"
-$setspn2 = "HTTP/mim contoso\MIMSP"
-$setspn3 = "MIMService/mim.contoso.it contoso\MIMService"
-$setspn4 = "MIMSync/mim contoso\MIMSync"
-
+$setspn1 = "HTTP/portal.mim.nu mim\MIMSP"
+$setspn2 = "HTTP/mim mim\MIMSP"
+$setspn3 = "MIMService/portal.mim.nu mim\MIMService"
+$setspn4 = "MIMSync/mim mim\MIMSync"
 
 # windows server ISO path
 $source = "F:\sources\SxS" 
@@ -66,7 +72,7 @@ $source = "F:\sources\SxS"
 $PreRequsInstallerPath = "d:\"
 
 $SharePoint2016RTMPath = "C:\temp\SharePoint2016\"
-# $PreRequsInstallerPath # Folder variabels have the same value
+# $PreRequsInstallerPath # Folder Variables have the same value
 
 # Directory path where SharePoint 2016 RTM files are kept
 
@@ -74,15 +80,52 @@ $PreRequsFilesPath = "C:\temp\SharePoint2016\"
 
 # E:\Synchronization Service
 
-$SynchronizationServicePath = "E:\Synchronization Service\"
+$SynchronizationServiceExe = "E:\Synchronization Service\Synchronization Service.msi"
+$syncLofFile = "C:\temp\synclog.log"
 
 # Service and Portal path
 
 $PortalPath = "e:\Service and Portal\Service and Portal.msi"
-$PortalLogPath = "c:\temp\log_test.log"
+$PortalLogPath = "c:\temp\service_Portal.log"
+
+# Install Service and Portal parameters
+
+$MAIL_SERVER = Hostname
+$SQLSERVER_SERVER = "CM1"
+$SERVICE_ACCOUNT_NAME = $MIMService
+$SERVICE_ACCOUNT_PASSWORD = $PasswdMIMService
+$SERVICE_ACCOUNT_DOMAIN = $env:USERDOMAIN
+$SERVICE_ACCOUNT_EMAIL = "Administrator@" + $SERVICE_ACCOUNT_DOMAIN + ".com"
+$RUNNING_USER_EMAIL = "Administrator@" + $SERVICE_ACCOUNT_DOMAIN + ".com"
+$SYNCHRONIZATION_SERVER_ACCOUNT = $MIMSync
+$SYNCHRONIZATION_SERVER = Hostname
+$SERVICEADDRESS = Hostname
+$REGISTRATION_ACCOUNT = $env:USERDOMAIN + "\" + $MIMMA
+$REGISTRATION_ACCOUNT_PASSWORD = $PasswdMIMMA
+$REGISTRATION_SERVERNAME= Hostname
+$REGISTRATION_PORTAL_URL = "http://localhost:8087"
+$RESET_ACCOUNT = $env:USERDOMAIN + "\" + $MIMMA
+$RESET_ACCOUNT_PASSWORD = $PasswdMIMMA
+$RESET_SERVERNAME = Hostname
+$SHAREPOINT_URL = $SPWeb
+$MIMPAM_ACCOUNT_DOMAIN = $env:USERDOMAIN
+$LOGFILENAME = $PortalLogPath
+
+
 
 # Dont edit script below
-#-------------------------------------------------------------------------------------
+############################# Command Execution Starts Below ###################################
+#
+
+void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
+
+$title = 'Have you run Prerequest installer'
+$msg   = 'Y / N'
+
+$text = [Microsoft.VisualBasic.Interaction]::InputBox($msg, $title)
+
+#Read-Host "Press ENTER"  #Easy Pause to be removed
+
 
 # Import Required Modules
 
@@ -179,7 +222,7 @@ DownloadPreReqs
 
 #Install PreReqs
 
-Start-Process "$PreRequsInstallerPath\PrerequisiteInstaller.exe" -Wait -ArgumentList "  `
+Start-Process "$PreRequsInstallerPath\PrerequisiteInstaller.exe" /Continue /Unattended -Wait -ArgumentList "  `
               /SQLNCli:`"$PreRequsFilesPath\sqlncli.msi`" `
               /idfx11:`"$PreRequsFilesPath\MicrosoftIdentityExtensions-64.msi`" `
               /Sync:`"$PreRequsFilesPath\Synchronization.msi`" `                                                                                 
@@ -247,6 +290,7 @@ Add-ADGroupmember -identity "MIMSyncPasswordSet" -Members $MIMService
 # Temorary fix $MIMService can not start Forfront Identity Manager Service
 Add-LocalGroupMember -Group "Administrators" -Member $MIMService
 Add-LocalGroupMember -Group "Administrators" -Member $dbManagedAccount 
+Add-ADGroupMember -identity "Domain Admins" -Members $dbManagedAccount # THis needs to be improved..
 
 
 # Try to add $dbManagedAccount to $SqlServer Note done yet
@@ -263,8 +307,6 @@ setspn -S $setspn2
 setspn -S $setspn3
 setspn -S $setspn4
 
-# Prepare Server
-
 Add-WindowsFeature NET-HTTP-Activation,NET-Non-HTTP-Activ,NET-WCF-Pipe-Activation45,NET-WCF-HTTP-Activation45,Web-Server,Web-WebServer,Web-Common-Http,Web-Static-Content,Web-Default-Doc,Web-Dir-Browsing,Web-Http-Errors,Web-App-Dev,Web-Asp-Net,Web-Asp-Net45,Web-Net-Ext,Web-Net-Ext45,Web-ISAPI-Ext,Web-ISAPI-Filter,Web-Health,Web-Http-Logging,Web-Log-Libraries,Web-Request-Monitor,Web-Http-Tracing,Web-Security,Web-Basic-Auth,Web-Windows-Auth,Web-Filtering,Web-Digest-Auth,Web-Performance,Web-Stat-Compression,Web-Dyn-Compression,Web-Mgmt-Tools,Web-Mgmt-Console,Web-Mgmt-Compat,Web-Metabase,WAS,WAS-Process-Model,WAS-NET-Environment,WAS-Config-APIs,Web-Lgcy-Scripting,Windows-Identity-Foundation,Xps-Viewer -source $source
 Add-WindowsFeature  rsat-ad-powershell,rsat-adds-tools -source $source
 iisreset /STOP
@@ -272,7 +314,8 @@ iisreset /STOP
 C:\Windows\System32\inetsrv\appcmd.exe unlock config /section:windowsAuthentication -commit:apphost
 iisreset /START
 
-#Install Sharepoint Trail Serial RTNGH-MQRV6-M3BWQ-DB748-VH7DM
+# Install Sharepoint Trail Serial RTNGH-MQRV6-M3BWQ-DB748-VH7DM
+# Needs to add /config and add right configuration 
 
 $cmd = "$PreRequsInstallerPath\setup.exe"
 invoke-expression $cmd 
@@ -284,11 +327,11 @@ $msg   = 'Is it done yet '
 
 $text = [Microsoft.VisualBasic.Interaction]::InputBox($msg, $title)
 
-Read-Host "Press ENTER"  #Easy Pause to be removed
+#Read-Host "Press ENTER"  #Easy Pause to be removed
 
 # Install in Synchronization Service powershell
 
-$cmd = "$SynchronizationServicePath\setup.exe"
+$cmd = "MSIEXEC /i $SynchronizationServiceExe SERVICEACCOUNT=$MIMSync SERVICEPASSWORD=$PasswdMIMSync SERVICEDOMAIN=$env:USERDOMAIN GROUPADMINS=$MIMAdmin GROUPOPERATORS= MIMSyncOperators GROUPACCOUNTJOINERS= MIMSyncJoiners GROUPBROWSE=MIMSyncBrowse GROUPPASSWORDSET=MIMSyncPasswordSet ACCEPT_EULA=1 FIREWALL_CONF=1 ADDLOCAL=ALL SQMOPTINSETTING=1 REBOOT=ReallySuppress /l*v $syncLofFile"
 invoke-expression $cmd 
 
 [void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
@@ -303,16 +346,17 @@ $text = [Microsoft.VisualBasic.Interaction]::InputBox($msg, $title)
 Add-PSSnapin Microsoft.SharePoint.PowerShell
 
 $dbManagedAccount = Get-SPManagedAccount -Identity $SPdbManagedAccount
-New-SpWebApplication -Name "MIM Portal" -ApplicationPool "MIMAPPPool" -ApplicationPoolAccount $dbManagedAccount -AuthenticationMethod "Kerberos" -Port 80 -Url $SPUrl
-$t = Get-SPWebTemplate -CompatibilityLevel 15 -Identity "STS#1"
+New-SpWebApplication -Name $SPPortalName -ApplicationPool $SPApplicationPool -ApplicationPoolAccount $dbManagedAccount -AuthenticationMethod $SPAuthenticationMethod -Port $Port -Url $SPUrl
+$t = Get-SPWebTemplate -CompatibilityLevel $CompatibilityLevel -Identity "STS#1"
 $w = Get-SPWebApplication $SPWeb
-New-SPSite -Url $w.Url -Template $t -OwnerAlias $OwnerAlias -CompatibilityLevel 15 -Name "MIM Portal" -SecondaryOwnerAlias $SecondaryOwnerAlias
+New-SPSite -Url $w.Url -Template $t -OwnerAlias $OwnerAlias -CompatibilityLevel $CompatibilityLevel -Name $SPPortalName -SecondaryOwnerAlias $SecondaryOwnerAlias
 $contentService = [Microsoft.SharePoint.Administration.SPWebService]::ContentService;
 $contentService.ViewStateOnServer = $false;
 $contentService.Update();
 Get-SPTimerJob hourly-all-sptimerservice-health-analysis-job | disable-SPTimerJob
-New-SPAlternateURL -WebApplication "MIM Portal" -Url http://localhost -Zone intranet
 
-Read-Host "Press ENTER"  #Easy Pause to be removed
+## Install sharepoint portal
 
-msiexec /I $PortalPath /L*V $PortalLogPath
+$cmd = "MSIEXEC /i $PortalPath MAIL_SERVER=$MAIL_SERVER SQLSERVER_SERVER=$SQLSERVER_SERVER SERVICE_ACCOUNT_NAME=$SERVICE_ACCOUNT_NAME SERVICE_ACCOUNT_PASSWORD=$SERVICE_ACCOUNT_PASSWORD SERVICE_ACCOUNT_DOMAIN=$SERVICE_ACCOUNT_DOMAIN SERVICE_ACCOUNT_EMAIL=$SERVICE_ACCOUNT_EMAIL RUNNING_USER_EMAIL=$RUNNING_USER_EMAIL SYNCHRONIZATION_SERVER_ACCOUNT=$SYNCHRONIZATION_SERVER_ACCOUNT SYNCHRONIZATION_SERVER=$SYNCHRONIZATION_SERVER SERVICEADDRESS=$SERVICEADDRESS SHAREPOINTUSERS_CONF=1 REGISTRATION_ACCOUNT=$REGISTRATION_ACCOUNT REGISTRATION_ACCOUNT_PASSWORD=$REGISTRATION_ACCOUNT_PASSWORD REGISTRATION_PORT=8087 REGISTRATION_SERVERNAME=$REGISTRATION_SERVERNAME IS_REGISTRATION_EXTRANET=Extranet REGISTRATION_PORTAL_URL=$REGISTRATION_PORTAL_URL RESET_ACCOUNT=$RESET_ACCOUNT RESET_ACCOUNT_PASSWORD=$RESET_ACCOUNT_PASSWORD RESET_PORT=8088 RESET_SERVERNAME=$RESET_SERVERNAME IS_RESET_EXTRANET=Extranet SHAREPOINT_URL=$SHAREPOINT_URL ACCEPT_EULA=1 FIREWALL_CONF=1 SQMOPTINSETTING=1 ADDLOCAL=ALL REMOVE=PAMServices MIMPAM_ACCOUNT_DOMAIN=$MIMPAM_ACCOUNT_DOMAIN REBOOT=ReallySuppress /l*v $PortalLogPath"
+invoke-expression $cmd
+New-SPAlternateURL -WebApplication $SPPortalName -Url $New_SPAlternateURL -Zone $Ie_Zone
