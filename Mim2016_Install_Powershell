@@ -116,7 +116,7 @@ $LOGFILENAME = $PortalLogPath
 ############################# Command Execution Starts Below ###################################
 #
 
-void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
+[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
 
 $title = 'Have you run Prerequest installer'
 $msg   = 'Y / N'
