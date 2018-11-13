@@ -1,4 +1,5 @@
-# This scrit is Composed/Found/stolen and modify by Nils Cronstedt And Jonas Novesten
+#***************************************************************************************
+# This script is Composed/Found/stolen and modify by Nils Cronstedt And Jonas Novesten
 # And its free to use and modify 
 # This script downloads SharePoint Server 2016 RTM
 # Only run this script on Windows Server 2012 R2
@@ -11,7 +12,8 @@
 # 
 #
 # This is fore the SQL Install  Needs to tested and Developed more
-# .\setup.exe /Q /IACCEPTSQLSERVERLICENSETERMS /ACTION=install /FEATURES=SQL /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="Mim\sharepoint" /SQLSVCPASSWORD="Pass@word1"   /AGTSVCSTARTUPTYPE=Automatic /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /SQLSYSADMINACCOUNTS="Mim\Administrator" /TCPENABLED=1
+# .\setup.exe /Q /IACCEPTSQLSERVERLICENSETERMS /ACTION=install /FEATURES=SQL /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="Mim\Sharepoint" /SQLSVCPASSWORD="Pass@word1" /AGTSVCSTARTUPTYPE=Automatic /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /SQLSYSADMINACCOUNTS="Mim\Administrator" /TCPENABLED=1
+# .\SSMS-Setup-ENU.exe /Install /passive /quiet
 #****************************************************************************************
 
 # Acounts that will be used or created
@@ -34,6 +36,7 @@ $passwddbManagedAccount ="Pass@word1"
 
 
 # Portal Settings
+
 $SPUrl = "http://portal.mim.nu"
 $SPWeb = "http://portal.mim.nu:80"
 $SPdbManagedAccount = "mim\sharepoint"
@@ -65,8 +68,8 @@ $setspn2 = "HTTP/mim mim\MIMSP"
 $setspn3 = "MIMService/portal.mim.nu mim\MIMService"
 $setspn4 = "MIMSync/mim mim\MIMSync"
 
-# windows server ISO path
 
+# windows server ISO path
 $source = "F:\sources\SxS" 
 
 # Directory path where SharePoint 2016 Pre-requisites files are kept
@@ -90,7 +93,6 @@ $PortalPath = "e:\Service and Portal\Service and Portal.msi"
 $PortalLogPath = "c:\temp\service_Portal.log"
 
 # Install Service and Portal parameters
-
 $MAIL_SERVER = Hostname
 $SQLSERVER_SERVER = "CM1"
 $SERVICE_ACCOUNT_NAME = $MIMService
@@ -113,8 +115,7 @@ $MIMPAM_ACCOUNT_DOMAIN = $env:USERDOMAIN
 $LOGFILENAME = $PortalLogPath
 
 # Dont edit script below
-############################# Command Execution Starts Below ###################################
-#
+#-------------------------------------------------------------------------------------
 
 [void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
 
@@ -133,17 +134,17 @@ Import-Module BitsTransfer
 # Specify download url's for SharePoint Server 2016 RTM prerequisites
 
 $DownloadUrls = (
-        	"http://download.microsoft.com/download/4/B/1/4B1E9B0E-A4F3-4715-B417-31C82302A70A/ENU/x64/sqlncli.msi", # Microsoft SQL Server 2012 SP1 Native Client
-		"https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x64/msodbcsql.msi", #Microsoft ODBC Driver 11 for SQL Server
-		"http://download.microsoft.com/download/E/0/0/E0060D8F-2354-4871-9596-DC78538799CC/Synchronization.msi", # Microsoft Sync Framework Runtime v1.0 SP1 (x64)
-		"http://download.microsoft.com//download/0/1/D/01D06854-CA0C-46F1-ADBA-EBF86010DCC6/rtm/MicrosoftIdentityExtensions-64.msi", # Microsoft Identity Extensions
-		"http://download.microsoft.com/download/A/6/7/A678AB47-496B-4907-B3D4-0A2D280A13C0/WindowsServerAppFabricSetup_x64.exe", # Windows Server AppFabric 1.1
-		"http://download.microsoft.com/download/F/1/0/F1093AF6-E797-4CA8-A9F6-FC50024B385C/AppFabric-KB3092423-x64-ENU.exe", # Cumulative Update 7 for Microsoft AppFabric 1.1 for Windows Server
-		"http://download.microsoft.com/download/3/C/F/3CF781F5-7D29-4035-9265-C34FF2369FA2/setup_msipc_x64.exe", # Microsoft Information Protection and Control Client
-		"http://download.microsoft.com/download/1/C/A/1CAA41C7-88B9-42D6-9E11-3C655656DAB1/WcfDataServices.exe", # Microsoft WCF Data Services 5.6
-		"http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x64.exe", # Visual C++ Redistributable Package for Visual Studio 2015,
-		"http://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x64.exe",# Another visual C++ Redistributable Package for Visual Studio 2013/2012,
-		"https://download.microsoft.com/download/C/3/A/C3A5200B-D33C-47E9-9D70-2F7C65DAAD94/NDP46-KB3045557-x86-x64-AllOS-ENU.exe" # .NET framework 4.6
+            "http://download.microsoft.com/download/4/B/1/4B1E9B0E-A4F3-4715-B417-31C82302A70A/ENU/x64/sqlncli.msi", # Microsoft SQL Server 2012 SP1 Native Client
+			"https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x64/msodbcsql.msi", #Microsoft ODBC Driver 11 for SQL Server
+            "http://download.microsoft.com/download/E/0/0/E0060D8F-2354-4871-9596-DC78538799CC/Synchronization.msi", # Microsoft Sync Framework Runtime v1.0 SP1 (x64)
+            "http://download.microsoft.com//download/0/1/D/01D06854-CA0C-46F1-ADBA-EBF86010DCC6/rtm/MicrosoftIdentityExtensions-64.msi", # Microsoft Identity Extensions
+            "http://download.microsoft.com/download/A/6/7/A678AB47-496B-4907-B3D4-0A2D280A13C0/WindowsServerAppFabricSetup_x64.exe", # Windows Server AppFabric 1.1
+            "http://download.microsoft.com/download/F/1/0/F1093AF6-E797-4CA8-A9F6-FC50024B385C/AppFabric-KB3092423-x64-ENU.exe", # Cumulative Update 7 for Microsoft AppFabric 1.1 for Windows Server
+            "http://download.microsoft.com/download/3/C/F/3CF781F5-7D29-4035-9265-C34FF2369FA2/setup_msipc_x64.exe", # Microsoft Information Protection and Control Client
+            "http://download.microsoft.com/download/1/C/A/1CAA41C7-88B9-42D6-9E11-3C655656DAB1/WcfDataServices.exe", # Microsoft WCF Data Services 5.6
+            "http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x64.exe", # Visual C++ Redistributable Package for Visual Studio 2015,
+            "http://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x64.exe",# Another visual C++ Redistributable Package for Visual Studio 2013/2012,
+            "https://download.microsoft.com/download/C/3/A/C3A5200B-D33C-47E9-9D70-2F7C65DAAD94/NDP46-KB3045557-x86-x64-AllOS-ENU.exe" # .NET framework 4.6
                 )
 
 function DownLoadPreRequisites()
@@ -237,77 +238,94 @@ Start-Process "$PreRequsInstallerPath\PrerequisiteInstaller.exe" -Wait -Argument
 # Create Accounts MIMMA,MIMSync,MIMService,MIMSP,MIMAdmin
 
 Import-Module ActiveDirectory
-
 Write-Verbose "Lets Create the OU Path where the user is placed" -Verbose 
 New-ADOrganizationalUnit -Name $Dn_Company -Path $Dn_Root
 New-ADOrganizationalUnit -Name $OU -Path $Dn_Company_Path
 
 Write-Verbose "Lets Create the user account in the domain" -Verbose 
 
-$sp = ConvertTo-SecureString $passwdMIMMA –asplaintext –force
-New-ADUser –SamAccountName $MIMMA –name $MIMMA -Path $path
-Set-ADAccountPassword –identity $MIMMA –NewPassword $sp
-Set-ADUser –identity $MIMMA –Enabled 1 –PasswordNeverExpires 1
+$sp = ConvertTo-SecureString $passwdMIMMA -asplaintext -force
+New-ADUser -SamAccountName $MIMMA -name $MIMMA -Path $path
+Set-ADAccountPassword -identity $MIMMA -NewPassword $sp
+Set-ADUser -identity $MIMMA -Enabled 1 -PasswordNeverExpires 1
 
-$sp = ConvertTo-SecureString $passwdMIMSync –asplaintext –force
-New-ADUser –SamAccountName $MIMSync –name $MIMSync -Path $path
-Set-ADAccountPassword –identity $MIMSync –NewPassword $sp
-Set-ADUser –identity $MIMSync –Enabled 1 –PasswordNeverExpires 1
+$sp = ConvertTo-SecureString $passwdMIMSync -asplaintext -force
+New-ADUser -SamAccountName $MIMSync -name $MIMSync -Path $path
+Set-ADAccountPassword -identity $MIMSync -NewPassword $sp
+Set-ADUser -identity $MIMSync -Enabled 1 -PasswordNeverExpires 1
 
-$sp = ConvertTo-SecureString $passwdMIMService –asplaintext –force
-New-ADUser –SamAccountName $MIMService –name $MIMService -Path $path
-Set-ADAccountPassword –identity $MIMService –NewPassword $sp
-Set-ADUser –identity $MIMService –Enabled 1 –PasswordNeverExpires 1
+$sp = ConvertTo-SecureString $passwdMIMService -asplaintext -force
+New-ADUser -SamAccountName $MIMService -name $MIMService -Path $path
+Set-ADAccountPassword -identity $MIMService -NewPassword $sp
+Set-ADUser -identity $MIMService -Enabled 1 -PasswordNeverExpires 1
 
-$sp = ConvertTo-SecureString $passwdMIMSP –asplaintext –force
-New-ADUser –SamAccountName $MIMSP –name $MIMSP -Path $path
-Set-ADAccountPassword –identity $MIMSP –NewPassword $sp
-Set-ADUser –identity $MIMSP –Enabled 1 –PasswordNeverExpires 1
+$sp = ConvertTo-SecureString $passwdMIMSP -asplaintext -force
+New-ADUser -SamAccountName $MIMSP -name $MIMSP -Path $path
+Set-ADAccountPassword -identity $MIMSP -NewPassword $sp
+Set-ADUser -identity $MIMSP -Enabled 1 -PasswordNeverExpires 1
 
-$sp = ConvertTo-SecureString $passwdMIMAdmin –asplaintext –force
-New-ADUser –SamAccountName $MIMAdmin –name $MIMAdmin -Path $path
-Set-ADAccountPassword –identity $MIMAdmin –NewPassword $sp
-Set-ADUser –identity $MIMAdmin –Enabled 1 –PasswordNeverExpires 1 
+$sp = ConvertTo-SecureString $passwdMIMAdmin -asplaintext -force
+New-ADUser -SamAccountName $MIMAdmin -name $MIMAdmin -Path $path
+Set-ADAccountPassword -identity $MIMAdmin -NewPassword $sp
+Set-ADUser -identity $MIMAdmin -Enabled 1 -PasswordNeverExpires 1 
 
-$sp = ConvertTo-SecureString $passwddbManagedAccount –asplaintext –force
-New-ADUser –SamAccountName $dbManagedAccount  –name $dbManagedAccount  -Path $path
-Set-ADAccountPassword –identity $dbManagedAccount  –NewPassword $sp
-Set-ADUser –identity $dbManagedAccount  –Enabled 1 –PasswordNeverExpires 1 
+$sp = ConvertTo-SecureString $passwddbManagedAccount -asplaintext -force
+New-ADUser -SamAccountName $dbManagedAccount  -name $dbManagedAccount -Path $path
+Set-ADAccountPassword -identity $dbManagedAccount  -NewPassword $sp
+Set-ADUser -identity $dbManagedAccount  -Enabled 1 -PasswordNeverExpires 1 
 
 # Create Groups
 
 Write-Verbose "Lets Create the user Groups account" -Verbose 
-New-ADGroup -name "MIMSyncAdmins" –GroupCategory Security –GroupScope Global –SamAccountName "MIMSyncAdmins" -Path $path
-New-ADGroup –name "MIMSyncOperators" –GroupCategory Security –GroupScope Global –SamAccountName "MIMSyncOperators" -Path $path
-New-ADGroup –name "MIMSyncJoiners" –GroupCategory Security –GroupScope Global –SamAccountName "MIMSyncJoiners" -Path $path
-New-ADGroup –name "MIMSyncBrowse" –GroupCategory Security –GroupScope Global –SamAccountName "MIMSyncBrowse" -Path $path
-New-ADGroup –name "MIMSyncPasswordSet" –GroupCategory Security –GroupScope Global –SamAccountName "MIMSyncPasswordSet" -Path $path
+New-ADGroup -name "MIMSyncAdmins" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncAdmins" -Path $path
+New-ADGroup -name "MIMSyncOperators" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncOperators" -Path $path
+New-ADGroup -name "MIMSyncJoiners" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncJoiners" -Path $path
+New-ADGroup -name "MIMSyncBrowse" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncBrowse" -Path $path
+New-ADGroup -name "MIMSyncPasswordSet" -GroupCategory Security -GroupScope Global -SamAccountName "MIMSyncPasswordSet" -Path $path
 Add-ADGroupMember -identity "MIMSyncAdmins" -Members $MIMAdmin
 Add-ADGroupmember -identity "MIMSyncAdmins" -Members $MIMService
 Add-ADGroupmember -identity "MIMSyncBrowse" -Members $MIMService
 Add-ADGroupmember -identity "MIMSyncPasswordSet" -Members $MIMService
 
 # Temorary fix $MIMService can not start Forfront Identity Manager Service
-
 Add-LocalGroupMember -Group "Administrators" -Member $MIMService
 Add-LocalGroupMember -Group "Administrators" -Member $dbManagedAccount 
 Add-ADGroupMember -identity "Domain Admins" -Members $dbManagedAccount # THis needs to be improved..
 
-
 # Try to add $dbManagedAccount to $SqlServer Note done yet
-
 #Enter-PSsession <ComputerName>
 #Add-LocalGroupMember -Group "Administrators" -Member <ComputerName>
 # 1
 #Invoke-Command -ComputerName $SqlServer -ScriptBlock {Add-LocalGroupMember -Group "Administrators" -Member $dbManagedAccount}
 
 # SetSPN 
-# To be dev I function that chesck how many SPN there is and add those
+# To be dev I function that Check how many SPN there is and add those
 
-setspn -S $setspn1
-setspn -S $setspn2
-setspn -S $setspn3
-setspn -S $setspn4
+#setspn -S $sesetspn1
+#setspn -S $setspn2
+#setspn -S $setspn3
+#setspn -S $setspn4
+
+setspn -S HTTP/portal.mim.nu mim\MIMSP
+setspn -S HTTP/mim mim\MIMSP
+setspn -S MIMService/portal.mim.nu mim\MIMService
+setspn -S MIMSync/mim mim\MIMSync
+
+
+
+Read-Host "Time to install sql server settings"  #Easy Pause to be removed
+
+
+Read-Host "Press ENTER"  #Easy Pause to be removed
+
+
+# This is fore the SQL Install  Needs to tested and Developed more
+# .\setup.exe /Q /IACCEPTSQLSERVERLICENSETERMS /ACTION=install /FEATURES=SQL /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="Mim\Sharepoint" /SQLSVCPASSWORD="Pass@word1" /AGTSVCSTARTUPTYPE=Automatic /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /SQLSYSADMINACCOUNTS="Mim\Administrator" /TCPENABLED=1
+# .\SSMS-Setup-ENU.exe /Install /passive /quiet
+
+
+
+# Prepare Server
 
 Add-WindowsFeature NET-HTTP-Activation,NET-Non-HTTP-Activ,NET-WCF-Pipe-Activation45,NET-WCF-HTTP-Activation45,Web-Server,Web-WebServer,Web-Common-Http,Web-Static-Content,Web-Default-Doc,Web-Dir-Browsing,Web-Http-Errors,Web-App-Dev,Web-Asp-Net,Web-Asp-Net45,Web-Net-Ext,Web-Net-Ext45,Web-ISAPI-Ext,Web-ISAPI-Filter,Web-Health,Web-Http-Logging,Web-Log-Libraries,Web-Request-Monitor,Web-Http-Tracing,Web-Security,Web-Basic-Auth,Web-Windows-Auth,Web-Filtering,Web-Digest-Auth,Web-Performance,Web-Stat-Compression,Web-Dyn-Compression,Web-Mgmt-Tools,Web-Mgmt-Console,Web-Mgmt-Compat,Web-Metabase,WAS,WAS-Process-Model,WAS-NET-Environment,WAS-Config-APIs,Web-Lgcy-Scripting,Windows-Identity-Foundation,Xps-Viewer -source $source
 Add-WindowsFeature  rsat-ad-powershell,rsat-adds-tools -source $source
@@ -316,8 +334,9 @@ iisreset /STOP
 C:\Windows\System32\inetsrv\appcmd.exe unlock config /section:windowsAuthentication -commit:apphost
 iisreset /START
 
-# Install Sharepoint Trial Serial RTNGH-MQRV6-M3BWQ-DB748-VH7DM
-# Needs to add /config and add right configuration 
+#Install Sharepoint Trail Serial RTNGH-MQRV6-M3BWQ-DB748-VH7DM
+
+## Start sharepoint installer
 
 $cmd = "$PreRequsInstallerPath\setup.exe"
 invoke-expression $cmd 
